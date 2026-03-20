@@ -12,8 +12,10 @@ export default function SettingsWindow({
   y = 120,
   stageRef,
   minimized = false,
+  maximized = false,
   onClose,
   onMinimize,
+  onMaximize,
   onSelectWallpaper,
   currentWallpaper,
   isActive = false,
@@ -50,16 +52,26 @@ export default function SettingsWindow({
 
   const items = useMemo(() => wallpapers ?? [], [wallpapers]);
 
+  const DOCK_WIDTH = 64;
+  const MENU_HEIGHT = 34;
+
+  const winWidth = maximized ? `calc(100% - ${DOCK_WIDTH}px)` : `${width}px`;
+  const winHeight = maximized ? `calc(100% - ${MENU_HEIGHT}px)` : `${height}px`;
+
+  const winTransform = maximized
+    ? `translate(${DOCK_WIDTH}px, ${MENU_HEIGHT}px)`
+    : `translate(${drag.x}px, ${drag.y}px)`;
+
   return (
     <section
       className={`window ${minimized ? "window--minimized" : ""} ${
-        isActive ? "window--active" : "window--inactive"
-      }`}
+        maximized ? "window--maximized" : ""
+      } ${isActive ? "window--active" : "window--inactive"}`}
       style={{
-        width,
-        height,
+        width: winWidth,
+        height: winHeight,
         zIndex,
-        transform: `translate(${drag.x}px, ${drag.y}px)`,
+        transform: winTransform,
       }}
       aria-label={`Ventana ${title}`}
       onMouseDown={(e) => {
@@ -96,8 +108,12 @@ export default function SettingsWindow({
             <button
               className="window__dotBtn window__dotBtn--green"
               type="button"
-              aria-label="Maximizar"
-              onPointerDown={(e) => e.stopPropagation()}>
+              aria-label={maximized ? "Restaurar" : "Maximizar"}
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                onMaximize?.();
+              }}>
               <LuPlus className="window__dotIcon" />
             </button>
           </div>

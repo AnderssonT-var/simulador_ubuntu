@@ -1,0 +1,521 @@
+/* Override window layout for Music Player */
+.music-window .window__body {
+  grid-template-columns: 1fr !important;
+  width: 100% !important;
+}
+
+.music-window .window__sidebar {
+  display: none !important;
+}
+
+.music-window .window__content {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Music Player Full Layout */
+.music__layout {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  gap: 0;
+  background: #000;
+  color: #fff;
+  position: relative;
+}
+
+.music__playerMain--full {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Artwork background */
+.music__artwork {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.music__artworkIcon {
+  font-size: 200px;
+  line-height: 1;
+  opacity: 0.1;
+}
+
+/* Info section - overlay on artwork */
+.music__info {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 2;
+  max-width: 90%;
+  padding: 20px 40px;
+}
+
+.music__title {
+  font-size: 56px;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  line-height: 1.1;
+  word-break: break-word;
+  text-shadow: 0 8px 32px rgba(0, 0, 0, 0.9), 0 2px 8px rgba(0, 0, 0, 0.7);
+  letter-spacing: -0.5px;
+}
+
+.music__artist {
+  font-size: 18px;
+  color: #ccc;
+  margin: 0;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.85);
+  font-weight: 400;
+}
+
+/* Controls section - bottom overlay */
+.music__controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 48px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.95) 100%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  box-sizing: border-box;
+}
+
+/* Progress bar */
+.music__progress {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.music__time {
+  font-size: 12px;
+  color: #888;
+  min-width: 40px;
+  text-align: center;
+  font-weight: 500;
+  font-family: 'Courier New', monospace;
+}
+
+.music__progressBar {
+  flex: 1;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: height 0.2s ease;
+}
+
+.music__progressBar:hover {
+  height: 6px;
+}
+
+.music__progressBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.1s linear;
+  box-shadow: 0 0 12px rgba(102, 126, 234, 0.8);
+}
+
+/* Buttons */
+.music__buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.music__btn {
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  outline: none;
+}
+
+.music__btn--prev,
+.music__btn--next {
+  width: 52px;
+  height: 52px;
+  font-size: 24px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.music__btn--prev:hover:not(:disabled),
+.music__btn--next:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.15);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
+}
+
+.music__btn--play {
+  width: 96px;
+  height: 96px;
+  font-size: 48px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 16px 48px rgba(102, 126, 234, 0.5);
+  position: relative;
+}
+
+.music__btn--play::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7a8eef 0%, #8a5bb6 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.music__btn--play:hover:not(:disabled) {
+  box-shadow: 0 20px 64px rgba(102, 126, 234, 0.7);
+  transform: scale(1.12);
+}
+
+.music__btn--play:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.music__btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.music__btn:disabled {
+  color: #555;
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+/* Volume */
+.music__volume {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 8px;
+}
+
+.music__volumeIcon {
+  color: #667eea;
+  font-size: 20px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+}
+
+.music__volumeSlider {
+  flex: 1;
+  max-width: 180px;
+  height: 5px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.music__volumeSlider:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.music__volumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.8);
+  transition: all 0.2s ease;
+}
+
+.music__volumeSlider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 16px rgba(102, 126, 234, 1);
+}
+
+.music__volumeSlider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.8);
+  transition: all 0.2s ease;
+}
+
+.music__volumePercent {
+  font-size: 12px;
+  color: #888;
+  min-width: 36px;
+  text-align: right;
+  font-weight: 500;
+  font-family: 'Courier New', monospace;
+}
+
+/* Scrollbars */
+.music__playlistExpanded::-webkit-scrollbar {
+  width: 6px;
+}
+
+.music__playlistExpanded::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+.music__playlistExpanded::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+
+.music__playlistExpanded::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* List Overlay */
+.music__listOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.music__listPanel {
+  width: 380px;
+  height: 100%;
+  background: linear-gradient(180deg, #0f0f1e 0%, #0a0a14 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideInLeft 0.3s ease;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.music__listClose {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: transparent;
+  color: #aaa;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.music__listClose:hover {
+  color: #fff;
+  background: rgba(102, 126, 234, 0.15);
+}
+
+.music__listTitle {
+  padding: 20px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+.music__playlistExpanded {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.music__listTrack {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  background: transparent;
+  color: #aaa;
+  text-align: left;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.15s ease;
+  font-size: 14px;
+}
+
+.music__listTrack:hover {
+  background: rgba(102, 126, 234, 0.1);
+  color: #fff;
+}
+
+.music__listTrack--active {
+  background: linear-gradient(90deg, rgba(102, 126, 234, 0.2) 0%, rgba(102, 126, 234, 0.05) 100%);
+  color: #fff;
+  border-bottom-color: #667eea;
+  border-left: 3px solid #667eea;
+  padding-left: 13px;
+}
+
+.music__listNum {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.music__listTrack--active .music__listNum {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+.music__listInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.music__listTrackTitle {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music__listTrackArtist {
+  font-size: 11px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+/* Toggle List Button */
+.music__listToggle {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-size: 26px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 100;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.music__listToggle:hover {
+  transform: scale(1.15);
+  box-shadow: 0 12px 48px rgba(102, 126, 234, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.music__listToggle:active {
+  transform: scale(0.95);
+}
+
+/* Status Messages */
+.music__status {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px 32px;
+  border-radius: 12px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-weight: 500;
+}
+
+.music__status--loading {
+  background: rgba(26, 42, 74, 0.85);
+  color: #8ab;
+  border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+.music__status--error {
+  background: rgba(74, 26, 26, 0.85);
+  color: #f99;
+  border: 1px solid rgba(255, 100, 100, 0.3);
+}
+
+.music__spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -2,15 +2,17 @@ import "./ActivitiesOverlay.css";
 import { useEffect, useState, useRef } from "react";
 
 import photosIcon from "../../assets/icons/dock/photos.webp";
+import musicIcon from "../../assets/icons/dock/music.webp";
 import settingsIcon from "../../assets/icons/dock/settings.webp";
 import terminalIcon from "../../assets/icons/dock/terminal.webp";
 import filesIcon from "../../assets/icons/dock/finder.webp";
 
 const APPS = [
   { id: "photos", name: "Fotos", icon: photosIcon },
+  { id: "music", name: "Música", icon: musicIcon },
   { id: "settings", name: "Configuración", icon: settingsIcon },
   { id: "terminal", name: "Terminal", icon: terminalIcon },
-  { id: "files", name: "Archivos", icon: filesIcon }
+  { id: "files", name: "Archivos", icon: filesIcon },
 ];
 
 export default function ActivitiesOverlay({

@@ -2,9 +2,11 @@ import "./Desktop.css";
 
 import Dock from "../Dock/Dock.jsx";
 import Window from "../Window/Window";
+import PhotosWindow from "../PhotosWindow/PhotosWindow.jsx";
 import { useRef, useState } from "react";
 import MenuBar from "../MenuBar/MenuBar.jsx";
 import SettingsWindow from "../SettingsWindow/SettingsWindow";
+import MusicWindow from "../MusicWindow/MusicWindow";
 import ActivitiesOverlay from "../ActivitiesOverlay/ActivitiesOverlay.jsx";
 import ClockPanel from "../ClockPanel/ClockPanel.jsx";
 
@@ -48,15 +50,24 @@ export default function Desktop() {
   /* Apps */
 
   const [photos, setPhotos] = useState({
-    open:false,
-    minimized:false,
-    workspace:0
+    open: false,
+    minimized: false,
+    maximized: false,
+    workspace: 0,
+  });
+
+  const [music, setMusic] = useState({
+    open: false,
+    minimized: false,
+    maximized: false,
+    workspace: 0,
   });
 
   const [settings, setSettings] = useState({
-    open:false,
-    minimized:false,
-    workspace:0
+    open: false,
+    minimized: false,
+    maximized: false,
+    workspace: 0,
   });
 
   /* Focus */
@@ -64,11 +75,12 @@ export default function Desktop() {
   const [activeAppId, setActiveAppId] = useState(null);
 
   const [zMap, setZMap] = useState({
-    photos:1,
-    settings:2
+    photos: 1,
+    music: 2,
+    settings: 3,
   });
 
-  const zSeedRef = useRef(3);
+  const zSeedRef = useRef(4);
 
   const focusApp = (appId) => {
 
@@ -84,19 +96,48 @@ export default function Desktop() {
   /* Close y Minimize */
 
   const handleClosePhotos = () =>
-    setPhotos({ open:false, minimized:false, workspace });
+    setPhotos({ open:false, minimized:false, maximized:false, workspace });
 
   const handleMinimizePhotos = () =>
     setPhotos(prev =>
-      prev.open ? { ...prev, minimized:true } : prev
+      prev.open ? { ...prev, minimized:true, maximized:false } : prev
+    );
+
+  const handleMaximizePhotos = () =>
+    setPhotos(prev =>
+      prev.open
+        ? { ...prev, maximized: !prev.maximized, minimized: false }
+        : prev
+    );
+
+  const handleCloseMusic = () =>
+    setMusic({ open:false, minimized:false, maximized:false, workspace });
+
+  const handleMinimizeMusic = () =>
+    setMusic(prev =>
+      prev.open ? { ...prev, minimized:true, maximized:false } : prev
+    );
+
+  const handleMaximizeMusic = () =>
+    setMusic(prev =>
+      prev.open
+        ? { ...prev, maximized: !prev.maximized, minimized: false }
+        : prev
     );
 
   const handleCloseSettings = () =>
-    setSettings({ open:false, minimized:false, workspace });
+    setSettings({ open:false, minimized:false, maximized:false, workspace });
 
   const handleMinimizeSettings = () =>
     setSettings(prev =>
-      prev.open ? { ...prev, minimized:true } : prev
+      prev.open ? { ...prev, minimized:true, maximized:false } : prev
+    );
+
+  const handleMaximizeSettings = () =>
+    setSettings(prev =>
+      prev.open
+        ? { ...prev, maximized: !prev.maximized, minimized: false }
+        : prev
     );
 
   /* DOCK + ACTIVITIES */
@@ -118,6 +159,24 @@ export default function Desktop() {
       });
 
       focusApp("photos");
+
+    }
+
+    if(appId==="music"){
+
+      setMusic(prev => {
+
+        if(!prev.open)
+          return { open:true, minimized:false, workspace };
+
+        if(!prev.minimized)
+          return { ...prev, minimized:true };
+
+        return { ...prev, minimized:false };
+
+      });
+
+      focusApp("music");
 
     }
 
@@ -155,11 +214,15 @@ export default function Desktop() {
 
   const moveWindowToWorkspace = (appId, ws) => {
 
-    if(appId === "photos"){
+    if (appId === "photos") {
       setPhotos(prev => ({ ...prev, workspace: ws }));
     }
 
-    if(appId === "settings"){
+    if (appId === "music") {
+      setMusic(prev => ({ ...prev, workspace: ws }));
+    }
+
+    if (appId === "settings") {
       setSettings(prev => ({ ...prev, workspace: ws }));
     }
 
@@ -194,7 +257,7 @@ export default function Desktop() {
         onClose={closeActivities}
         onLaunchApp={handleLaunchApp}
         moveWindowToWorkspace={moveWindowToWorkspace}
-        windows={{photos,settings}}
+        windows={{photos,music,settings}}
         workspace={workspace}
         setWorkspace={setWorkspace}
         workspaces={WORKSPACES}
@@ -208,7 +271,7 @@ export default function Desktop() {
       >
 
         {photos.open && photos.workspace===workspace && (
-          <Window
+          <PhotosWindow
             title="Fotos"
             x={140}
             y={120}
@@ -216,11 +279,32 @@ export default function Desktop() {
             height={360}
             stageRef={stageRef}
             minimized={photos.minimized}
+            maximized={photos.maximized}
             onClose={handleClosePhotos}
             onMinimize={handleMinimizePhotos}
+            onMaximize={handleMaximizePhotos}
             isActive={activeAppId==="photos"}
             zIndex={zMap.photos}
             onFocus={()=>focusApp("photos")}
+          />
+        )}
+
+        {music.open && music.workspace===workspace && (
+          <MusicWindow
+            title="Música"
+            x={200}
+            y={160}
+            width={520}
+            height={360}
+            stageRef={stageRef}
+            minimized={music.minimized}
+            maximized={music.maximized}
+            onClose={handleCloseMusic}
+            onMinimize={handleMinimizeMusic}
+            onMaximize={handleMaximizeMusic}
+            isActive={activeAppId==="music"}
+            zIndex={zMap.music}
+            onFocus={()=>focusApp("music")}
           />
         )}
 
@@ -233,8 +317,10 @@ export default function Desktop() {
             height={360}
             stageRef={stageRef}
             minimized={settings.minimized}
+            maximized={settings.maximized}
             onClose={handleCloseSettings}
             onMinimize={handleMinimizeSettings}
+            onMaximize={handleMaximizeSettings}
             onSelectWallpaper={handleWallpaperChange}
             currentWallpaper={wallpaper}
             isActive={activeAppId==="settings"}
@@ -249,7 +335,7 @@ export default function Desktop() {
 
       <Dock
         onItemClick={handleDockClick}
-        appState={{photos,settings}}
+        appState={{photos,music,settings}}
       />
 
     </main>

@@ -13,11 +13,12 @@
   padding-top: 40px;
   padding-bottom: 12px;
 
-  z-index: 10;
+  z-index: 150;
 
-  background: #1f1f1f;
-
-  border-right: 1px solid rgba(255,255,255,0.08);
+  background: rgba(20, 20, 20, 0.62);
+  backdrop-filter: blur(14px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 1px 0 0 rgba(255, 255, 255, 0.05);
 }
 
 /* contenedor apps */
@@ -47,7 +48,17 @@
   display: grid;
   place-items: center;
 
-  transition: background 120ms ease;
+  border-radius: 999px;
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.dockItem:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(2px);
+}
+
+.dockItem--open {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* hover lateral estilo GNOME */
@@ -64,7 +75,7 @@
   width: 3px;
   height: 60%;
 
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.8);
 
   border-radius: 2px;
 
@@ -90,7 +101,7 @@
 
   border-radius: 50%;
 
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
 
   transition: transform 160ms ease;
 }
@@ -157,10 +168,11 @@
 
   font-size: 12px;
 
-  color: #ffffff;
-  background: #2a2a2a;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(20, 20, 20, 0.82);
 
-  border-radius: 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
   white-space: nowrap;
 

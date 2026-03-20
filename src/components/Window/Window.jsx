@@ -9,6 +9,7 @@ import {
 } from "react-icons/lu";
 import { createPortal } from "react-dom";
 import { useWindowDrag } from "../../hooks/useWindowDrag";
+import { useWindowResize } from "../../hooks/useWindowResize";
 
 const TABS = [
   { id: "all", label: "Todo" },
@@ -24,8 +25,10 @@ export default function Window({
   y = 120,
   stageRef,
   minimized = false,
+  maximized = false,
   onClose,
   onMinimize,
+  onMaximize,
   isActive = false,
   zIndex = 1,
   onFocus,
@@ -33,6 +36,8 @@ export default function Window({
   const [navLock, setNavLock] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [viewer, setViewer] = useState({ open: false, index: 0 });
+  const [currentWidth, setCurrentWidth] = useState(width);
+  const [currentHeight, setCurrentHeight] = useState(height);
 
   const [media, setMedia] = useState({ photos: [], videos: [] });
 
@@ -86,23 +91,56 @@ export default function Window({
   const drag = useWindowDrag({
     initialX: x,
     initialY: y,
-    width,
+    width: currentWidth,
     edgePadding: 120,
     overflow: 30,
     containerRef: stageRef,
   });
 
+  const resize = useWindowResize({
+    initialWidth: currentWidth,
+    initialHeight: currentHeight,
+    minWidth: 300,
+    minHeight: 200,
+    containerRef: stageRef,
+  });
+
+  // Update size state when resize changes
+  const [prevResizeWidth, setPrevResizeWidth] = useState(resize.width);
+  const [prevResizeHeight, setPrevResizeHeight] = useState(resize.height);
+
+  useEffect(() => {
+    if (resize.width !== prevResizeWidth) {
+      setCurrentWidth(resize.width);
+      setPrevResizeWidth(resize.width);
+    }
+    if (resize.height !== prevResizeHeight) {
+      setCurrentHeight(resize.height);
+      setPrevResizeHeight(resize.height);
+    }
+  }, [resize.width, resize.height, prevResizeWidth, prevResizeHeight]);
+
+  const DOCK_WIDTH = 64;
+  const MENU_HEIGHT = 34;
+
+  const winWidth = maximized ? `calc(100% - ${DOCK_WIDTH}px)` : `${currentWidth}px`;
+  const winHeight = maximized ? `calc(100% - ${MENU_HEIGHT}px)` : `${currentHeight}px`;
+
+  const winTransform = maximized
+    ? `translate(${DOCK_WIDTH}px, ${MENU_HEIGHT}px)`
+    : `translate(${drag.x}px, ${drag.y}px)`;
+
   return (
     <section
       data-window-id={title.toLowerCase()}
       className={`window ${minimized ? "window--minimized" : ""} ${
-        isActive ? "window--active" : "window--inactive"
-      }`}
+        maximized ? "window--maximized" : ""
+      } ${isActive ? "window--active" : "window--inactive"}`}
       style={{
-        width,
-        height,
+        width: winWidth,
+        height: winHeight,
         zIndex,
-        transform: `translate(${drag.x}px, ${drag.y}px)`,
+        transform: winTransform,
       }}
       aria-label={`Ventana ${title}`}
       onMouseDown={(e) => {
@@ -142,8 +180,12 @@ export default function Window({
             <button
               className="window__dotBtn window__dotBtn--green"
               type="button"
-              aria-label="Maximizar"
+              aria-label={maximized ? "Restaurar" : "Maximizar"}
               onPointerDown={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                onMaximize?.();
+              }}
             >
               <LuPlus className="window__dotIcon" />
             </button>
@@ -277,6 +319,23 @@ export default function Window({
             document.body,
           )}
       </div>
+
+      {/* Resize Handles */}
+      {!maximized && (
+        <>
+          {/* Corners */}
+          <div className="window__resizeHandle window__resizeHandle--nw" {...resize.bindResize('top-left')} />
+          <div className="window__resizeHandle window__resizeHandle--ne" {...resize.bindResize('top-right')} />
+          <div className="window__resizeHandle window__resizeHandle--sw" {...resize.bindResize('bottom-left')} />
+          <div className="window__resizeHandle window__resizeHandle--se" {...resize.bindResize('bottom-right')} />
+
+          {/* Edges */}
+          <div className="window__resizeHandle window__resizeHandle--n" {...resize.bindResize('top')} />
+          <div className="window__resizeHandle window__resizeHandle--s" {...resize.bindResize('bottom')} />
+          <div className="window__resizeHandle window__resizeHandle--w" {...resize.bindResize('left')} />
+          <div className="window__resizeHandle window__resizeHandle--e" {...resize.bindResize('right')} />
+        </>
+      )}
     </section>
   );
 }

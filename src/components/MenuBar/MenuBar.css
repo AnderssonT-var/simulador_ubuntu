@@ -1,122 +1,140 @@
 .menuBar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 
-position:fixed;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-top:0;
-left:0;
-right:0;
+  padding: 0 14px;
 
-height:32px;
+  background: rgba(20, 20, 20, 0.72);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
 
-display:flex;
-align-items:center;
-justify-content:space-between;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "Ubuntu", "Segoe UI", system-ui, -apple-system, sans-serif;
 
-padding:0 14px;
-
-background:#1f1f1f;
-
-color:#ffffff;
-
-font-size:13px;
-font-weight:500;
-
-z-index:200;
-
-user-select:none;
-
+  z-index: 200;
+  user-select: none;
 }
 
 /* secciones */
 
 .menuBar__left,
 .menuBar__center,
-.menuBar__right{
-
-display:flex;
-align-items:center;
-
+.menuBar__right {
+  display: flex;
+  align-items: center;
 }
 
 /* izquierda */
 
-.menuBar__activities{
+.menuBar__activities {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: inherit;
 
-background:none;
-border:none;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
 
-color:white;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 999px;
 
-font-size:13px;
-font-weight:500;
-
-cursor:pointer;
-
-padding:4px 8px;
-
-border-radius:6px;
-
-transition:background .12s;
-
+  transition: background 150ms ease, transform 150ms ease;
 }
 
-.menuBar__activities:hover{
+.menuBar__activities:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
 
-background:#2c2c2c;
-
+.menuBar__activities:active {
+  transform: translateY(0);
 }
 
 /* centro reloj */
 
-.menuBar__center{
-
-position:absolute;
-
-left:50%;
-transform:translateX(-50%);
-
-pointer-events:auto;
-
+.menuBar__center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: auto;
 }
 
-.menuBar__clock{
+.menuBar__clock {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: inherit;
 
-cursor:pointer;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 999px;
 
-padding:4px 8px;
-
-border-radius:6px;
-
-transition:background .12s;
-
+  transition: background 150ms ease, transform 150ms ease;
 }
 
-.menuBar__clock:hover{
+.menuBar__clock:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
 
-background:#2c2c2c;
-
+.menuBar__clock:active {
+  transform: translateY(0);
 }
 
 /* derecha */
 
-.menuBar__right{
-
-gap:12px;
-
+.menuBar__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.menuBar__icon{
+.menuBar__icon,
+.menuBar__battery {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-opacity:.9;
+  padding: 6px 8px;
+  border-radius: 999px;
 
-font-size:14px;
-
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.88);
+  opacity: 1;
+  font-size: 14px;
+  transition: background 150ms ease, color 150ms ease;
 }
 
-.menuBar__battery{
+.menuBar__icon:hover,
+.menuBar__battery:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 1);
+}
 
-opacity:.9;
+.menuBar__battery {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-font-size:13px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  gap: 6px;
+}
 
+.menuBar__battery svg,
+.menuBar__icon svg {
+  width: 16px;
+  height: 16px;
 }
